@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
+/* Custom fortify load*/
+use App\Http\Controllers\Auth\LoginController;
+use Laravel\Fortify\Features;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,10 +18,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Route::get('login', function () {
-    return view('welcome');
+Route::prefix('/bo')->group(function () {
+    //Login routes
+    $limiter = config('fortify.limiters.login');
+    Route::get('/', function() {
+        return redirect('/bo/login');
+    });
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])
+        ->middleware(['guest:'.config('fortify.guard')])
+        ->name('login');
+    Route::post('/login', [LoginController::class, 'store'])
+        ->middleware(array_filter([
+            'guest:'.config('fortify.guard'),
+            $limiter ? 'throttle:'.$limiter : null,
+        ]));
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+
+    Route::middleware('auth')->group(function () {
+        //Page routes
+        // Route::get('/dashboard', [ComplaintController::class, 'dashboard'])->name('keluhan.dashboard');
+
+        //User management
+        // Route::middleware('role.check')->group(function () {
+        //     Route::resource('user', UserController::class);
+        // });
+    });
 });
