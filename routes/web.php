@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 
+/* Controller load */
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
+
 /* Custom fortify load*/
 use App\Http\Controllers\Auth\LoginController;
 use Laravel\Fortify\Features;
@@ -39,13 +43,13 @@ Route::prefix('/bo')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    Route::middleware('auth')->group(function () {
+    // Route::middleware('auth')->group(function () {
         //Page routes
-        // Route::get('/dashboard', [ComplaintController::class, 'dashboard'])->name('keluhan.dashboard');
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         //User management
         // Route::middleware('role.check')->group(function () {
         //     Route::resource('user', UserController::class);
         // });
-    });
+    // });
 });
