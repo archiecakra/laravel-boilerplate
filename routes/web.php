@@ -48,6 +48,7 @@ Route::prefix('/bo')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
         //User management
+        Route::resource('user', UserController::class);
         // Route::middleware('role.check')->group(function () {
         //     Route::resource('user', UserController::class);
         // });
