@@ -47,6 +47,8 @@ Route::prefix('/bo')->group(function () {
         //Page routes
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+        Route::post('/user/table', [UserController::class, 'table'])->name('user.table');
+
         //User management
         Route::resource('user', UserController::class);
         // Route::middleware('role.check')->group(function () {

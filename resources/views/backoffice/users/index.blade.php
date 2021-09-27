@@ -43,17 +43,18 @@
         <h3 class="card-title">Invoices</h3>
       </div>
       <div class="card-body">
-        <div class="table-responsive">
+        <div class="table-responsive-xl">
           <table id="datatable" class="table card-table table-vcenter text-nowrap datatable">
             <thead>
               <tr>
-                <th class="w-1">No.</th>
-                <th>Role</th>
-                <th>Username</th>
+                {{-- <th class="w-1">No.</th> --}}
                 <th>Name</th>
+                <th>Username</th>
+                <th>Role</th>
                 <th>Email</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -68,6 +69,57 @@
 
 @section('js')
   <script>
-    $('#datatable').DataTable();
+    var table = $('#datatable').DataTable({
+      // stateSave: true,
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: '{{ route("user.table") }}',
+        contentType: "application/json",
+        type: "POST",
+        headers: {
+          "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        data: function ( d ) {
+          return JSON.stringify( d );
+        }
+      },
+      columns: [
+        { data: 'name', name: 'name' },
+        { data: 'username', name: 'username' },
+        { data: 'role', name: 'role' },
+        { data: 'email', name: 'email' },
+        { data: 'created_at', name: 'created_at' },
+        { data: 'updated_at', name: 'updated_at' },
+        { data: null },
+      ],
+      columnDefs: [
+        {
+          "targets": [0, 1, 2, 3, 4, 5],
+          "className": "text-center align-middle",
+        },
+        {
+          "targets": 6,
+          "orderable": false,
+          "className": "text-end",
+          "render": function(data, type, row, meta) {
+            var url = '{{ route("user.edit", ":slug") }}';
+            url = url.replace(':slug', row.id);
+
+            return '<span class="dropdown">'
+                      +'<button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">Aksi</button>'
+                      +'<div class="dropdown-menu dropdown-menu-end">'
+                        +'<a class="dropdown-item" href="#">'
+                          +'Edit'
+                        +'</a>'
+                        +'<a class="dropdown-item" href="#">'
+                          +'Hapus'
+                        +'</a>'
+                      +'</div>'
+                    +'</span>';
+          },
+        },
+      ],
+    });
   </script>
 @endsection
