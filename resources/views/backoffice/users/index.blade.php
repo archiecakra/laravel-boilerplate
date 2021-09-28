@@ -19,15 +19,15 @@
         <!-- Page title actions -->
         <div class="col-auto ms-auto d-print-none">
           <div class="btn-list">
-            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
+            <button onclick="create()" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-report">
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
               Create new user
-            </a>
-            <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
+            </button>
+            <button onclick="create()" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
               <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-            </a>
+            </button>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Tambah User</h5>
+          <h5 class="modal-title">Create User</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -80,7 +80,7 @@
           <form action="" id="form">
             <div class="mb-3">
               <label class="form-label">Name</label>
-              <input id="name" type="text" class="form-control" name="example-text-input" placeholder="Your report name">
+              <input id="name" type="text" class="form-control" name="example-text-input" placeholder="Your Name">
             </div>
             <div class="row">
               <div class="col-lg-7">
@@ -92,7 +92,7 @@
               <div class="col-lg-5">
                 <div class="mb-3">
                   <label class="form-label">Username</label>
-                  <input id="username" type="email" class="form-control" name="example-text-input" placeholder="john.doe">
+                  <input id="username" type="text" class="form-control" name="example-text-input" placeholder="john.doe">
                 </div>
               </div>
             </div>
@@ -127,6 +127,20 @@
                 </label>
               </div>
             </div>
+            <div id="password" class="row">
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Password</label>
+                  <input id="password" type="password" class="form-control" name="example-text-input" placeholder="Password">
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="mb-3">
+                  <label class="form-label">Password Confirmation</label>
+                  <input id="password_confirmation" type="password" class="form-control" name="example-text-input" placeholder="Password Confirmation">
+                </div>
+              </div>
+            </div>
           </form>
 
         </div>
@@ -134,11 +148,11 @@
           <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
             Cancel
           </a>
-          <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+          <button id="submit" class="btn btn-primary ms-auto">
             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
             Save
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -204,10 +218,13 @@
     });
 
     function edit(id) {
+
+      $('.modal-title').html('Edit User');
+      $('#submit').attr('onclick','update()');
+
       let url = '{{ route("user.edit", ":slug") }}';
       url = url.replace(':slug', id);
-      $('.modal-title').html('Edit User');
-      // alert('test '+id);
+
       $.ajax({
         type  : 'POST',
         url   : url,
@@ -233,10 +250,44 @@
           });
         },
       });
+
+    }
+
+    function update(id) {
+      alert('test update');
     }
 
     function create() {
+      $('#submit').attr('onclick','store()');
+    }
 
+    function store() {
+
+      let name = $('#name').val();
+      let username = $('#username').val();
+      let email = $('#email').val();
+
+      $.ajax({
+        type  : 'POST',
+        url   : '{{ route("user.store") }}',
+        dataType  : 'json',
+        data      : {
+          "_token": "{{ csrf_token() }}",
+          "name": name,
+          "username": username,
+        },
+        success   : function (data) {
+          console.log(data);
+        },
+        error : function (xhr, status, error) {
+          let data = JSON.parse(xhr.responseText);
+          $('.overlay').hide();
+          Toast.fire({
+            icon: 'error',
+            title: data.message,
+          });
+        },
+      });
     }
   </script>
 @endsection

@@ -51,7 +51,7 @@ Route::prefix('/bo')->group(function () {
         //User management
         Route::post('/user/table', [UserController::class, 'table'])->name('user.table');
         Route::get('/user', [UserController::class, 'index'])->name('user.index');
-        Route::post('/user', [UserController::class, 'create'])->name('user.create');
+        Route::post('/user', [UserController::class, 'store'])->name('user.store');
         Route::post('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
         // Route::resource('user', UserController::class);
         // Route::middleware('role.check')->group(function () {

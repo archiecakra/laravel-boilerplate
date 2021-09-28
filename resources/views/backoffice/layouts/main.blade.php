@@ -110,8 +110,8 @@
                       <a class="dropdown-item {{ (request()->is('*user')) ? 'active' : ''}}" href="{{ route('user.index') }}" >
                         List User
                       </a>
-                      <a class="dropdown-item" href="{{ route('user.create') }}" >
-                        Create User
+                      <a class="dropdown-item" href="#" >
+                        Role Management
                       </a>
                     </div>
                   </div>
