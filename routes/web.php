@@ -47,10 +47,13 @@ Route::prefix('/bo')->group(function () {
         //Page routes
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        Route::post('/user/table', [UserController::class, 'table'])->name('user.table');
 
         //User management
-        Route::resource('user', UserController::class);
+        Route::post('/user/table', [UserController::class, 'table'])->name('user.table');
+        Route::get('/user', [UserController::class, 'index'])->name('user.index');
+        Route::post('/user', [UserController::class, 'create'])->name('user.create');
+        Route::post('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+        // Route::resource('user', UserController::class);
         // Route::middleware('role.check')->group(function () {
         //     Route::resource('user', UserController::class);
         // });

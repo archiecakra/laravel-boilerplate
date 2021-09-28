@@ -72,81 +72,63 @@
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Edit User</h5>
+          <h5 class="modal-title">Tambah User</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
-          </div>
-          <div class="row">
-            <div class="col-lg-7">
-              <div class="mb-3">
-                <label class="form-label">Email</label>
-                <input type="email" class="form-control" name="example-text-input" placeholder="example@mail.com">
+
+          <form action="" id="form">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input id="name" type="text" class="form-control" name="example-text-input" placeholder="Your report name">
+            </div>
+            <div class="row">
+              <div class="col-lg-7">
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input id="email" type="email" class="form-control" name="example-text-input" placeholder="example@mail.com">
+                </div>
+              </div>
+              <div class="col-lg-5">
+                <div class="mb-3">
+                  <label class="form-label">Username</label>
+                  <input id="username" type="email" class="form-control" name="example-text-input" placeholder="john.doe">
+                </div>
               </div>
             </div>
-            <div class="col-lg-5">
-              <div class="mb-3">
-                <label class="form-label">Username</label>
-                <input type="email" class="form-control" name="example-text-input" placeholder="john.doe">
-              </div>
-            </div>
-          </div>
-          <label class="form-label">User's Role</label>
-          <div class="form-selectgroup-boxes row mb-3">
-            <div class="col-lg-6">
-              <label class="form-selectgroup-item">
-                <input type="radio" name="report-type" value="admin" class="form-selectgroup-input" checked>
-                <span class="form-selectgroup-label d-flex align-items-center p-3">
-                  <span class="me-3">
-                    <span class="form-selectgroup-check"></span>
+            <label class="form-label">User's Role</label>
+            <div class="form-selectgroup-boxes row mb-3">
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="report-type" value="admin" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">Admin</span>
+                      <span class="d-block text-muted">Provide full access to this web application</span>
+                    </span>
                   </span>
-                  <span class="form-selectgroup-label-content">
-                    <span class="form-selectgroup-title strong mb-1">Admin</span>
-                    <span class="d-block text-muted">Provide full access to this web application</span>
+                </label>
+              </div>
+              <div class="col-lg-6">
+                <label class="form-selectgroup-item">
+                  <input type="radio" name="report-type" value="user" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label d-flex align-items-center p-3">
+                    <span class="me-3">
+                      <span class="form-selectgroup-check"></span>
+                    </span>
+                    <span class="form-selectgroup-label-content">
+                      <span class="form-selectgroup-title strong mb-1">User</span>
+                      <span class="d-block text-muted">Provide limited access to this web application</span>
+                    </span>
                   </span>
-                </span>
-              </label>
-            </div>
-            <div class="col-lg-6">
-              <label class="form-selectgroup-item">
-                <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
-                <span class="form-selectgroup-label d-flex align-items-center p-3">
-                  <span class="me-3">
-                    <span class="form-selectgroup-check"></span>
-                  </span>
-                  <span class="form-selectgroup-label-content">
-                    <span class="form-selectgroup-title strong mb-1">User</span>
-                    <span class="d-block text-muted">Provide limited access to this web application</span>
-                  </span>
-                </span>
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Client name</label>
-                <input type="text" class="form-control">
+                </label>
               </div>
             </div>
-            <div class="col-lg-6">
-              <div class="mb-3">
-                <label class="form-label">Reporting period</label>
-                <input type="date" class="form-control">
-              </div>
-            </div>
-            <div class="col-lg-12">
-              <div>
-                <label class="form-label">Additional information</label>
-                <textarea class="form-control" rows="3"></textarea>
-              </div>
-            </div>
-          </div>
+          </form>
+
         </div>
         <div class="modal-footer">
           <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
@@ -155,7 +137,7 @@
           <a href="#" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
             <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-            Create new report
+            Save
           </a>
         </div>
       </div>
@@ -165,7 +147,7 @@
 
 @section('js')
   <script>
-    var table = $('#datatable').DataTable({
+    let table = $('#datatable').DataTable({
       // stateSave: true,
       processing: true,
       serverSide: true,
@@ -199,16 +181,13 @@
           "orderable": false,
           "className": "text-end",
           "render": function(data, type, row, meta) {
-            var url = '{{ route("user.edit", ":slug") }}';
-            url = url.replace(':slug', row.id);
-
             return '<span class="dropdown">'
                     +'<button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">Aksi</button>'
                     +'<div class="dropdown-menu dropdown-menu-end">'
-                      +'<button class="dropdown-item btn btn-ghost-dark w-100" data-bs-toggle="modal" data-bs-target="#modal-report">'
+                      +'<button onclick="edit('+row.id+')" class="dropdown-item btn btn-ghost-dark w-100" data-bs-toggle="modal" data-bs-target="#modal-report">'
                         +'Edit'
                       +'</button>'
-                      +'<button class="dropdown-item btn btn-ghost-dark w-100">'
+                      +'<button onclick="delete('+row.id+')" class="dropdown-item btn btn-ghost-dark w-100">'
                         +'Hapus'
                       +'</button>'
                     +'</div>'
@@ -217,5 +196,47 @@
         },
       ],
     });
+
+    $('#modal-report').on('hidden.bs.modal', function() {
+      $('.modal-title').html('Tambah User');
+      $(':input', this).val('');
+      $('.form-selectgroup-input').prop("checked", false);
+    });
+
+    function edit(id) {
+      let url = '{{ route("user.edit", ":slug") }}';
+      url = url.replace(':slug', id);
+      $('.modal-title').html('Edit User');
+      // alert('test '+id);
+      $.ajax({
+        type  : 'POST',
+        url   : url,
+        dataType  : 'json',
+        data      : {"_token": "{{ csrf_token() }}", "id": id},
+        success   : function (data) {
+          console.log(data);
+          $('#name').val(data.name);
+          $('#username').val(data.username);
+          $('#email').val(data.email);
+          if (data.role == 'admin') {
+            $('.form-selectgroup-input').eq(0).prop("checked", true);
+          } else {
+            $('.form-selectgroup-input').eq(1).prop("checked", true);
+          }
+        },
+        error : function (xhr, status, error) {
+          let data = JSON.parse(xhr.responseText);
+          $('.overlay').hide();
+          Toast.fire({
+            icon: 'error',
+            title: data.message,
+          });
+        },
+      });
+    }
+
+    function create() {
+
+    }
   </script>
 @endsection

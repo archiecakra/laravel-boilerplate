@@ -58,7 +58,7 @@ class UserController extends Controller
    */
   public function edit(User $user)
   {
-      //
+    return response()->json($user);
   }
 
   /**
