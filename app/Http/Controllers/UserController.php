@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use DB;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -36,7 +38,30 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
-      //
+
+    $rules = [
+      'name' => 'required|string|regex:/^[a-zA-Z\s]+$/u|max:100',
+      'username' => 'required|alpha_dash|max:50|unique:users,username',
+      'email' => 'required|email:dns,rfc|unique:users,email',
+      'role' => 'required|in:admin,user',
+      'password'  => 'required|string|min:8|confirmed',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+      $responseArr['message'] = $validator->errors();
+      return response()->json($responseArr);
+    }
+
+    $users = DB::table('users')->insert([
+      'name'      => $request->name,
+      'role'      => $request->role,
+      'username'  => $request->username,
+      'email'     => $request->email,
+      'password'  => Hash::make($request->password),
+      'created_at' =>  date('Y-m-d H:i:s'),
+    ]);
+
   }
 
   /**

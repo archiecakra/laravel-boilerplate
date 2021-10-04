@@ -237,6 +237,8 @@
 
     @yield('modal')
 
+    <!-- sweetalert -->
+    <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
     <!-- Jquery -->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
     <!-- Libs JS -->

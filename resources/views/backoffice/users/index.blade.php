@@ -77,22 +77,22 @@
         </div>
         <div class="modal-body">
 
-          <form action="" id="form">
+          <form id="form">
             <div class="mb-3">
               <label class="form-label">Name</label>
-              <input id="name" type="text" class="form-control" name="example-text-input" placeholder="Your Name">
+              <input id="name" type="text" class="form-control" name="name" placeholder="Your Name">
             </div>
             <div class="row">
               <div class="col-lg-7">
                 <div class="mb-3">
                   <label class="form-label">Email</label>
-                  <input id="email" type="email" class="form-control" name="example-text-input" placeholder="example@mail.com">
+                  <input id="email" type="email" class="form-control" name="email" placeholder="example@mail.com">
                 </div>
               </div>
               <div class="col-lg-5">
                 <div class="mb-3">
                   <label class="form-label">Username</label>
-                  <input id="username" type="text" class="form-control" name="example-text-input" placeholder="john.doe">
+                  <input id="username" type="text" class="form-control" name="username" placeholder="john.doe">
                 </div>
               </div>
             </div>
@@ -100,7 +100,7 @@
             <div class="form-selectgroup-boxes row mb-3">
               <div class="col-lg-6">
                 <label class="form-selectgroup-item">
-                  <input type="radio" name="report-type" value="admin" class="form-selectgroup-input">
+                  <input type="radio" name="role" value="admin" class="form-selectgroup-input">
                   <span class="form-selectgroup-label d-flex align-items-center p-3">
                     <span class="me-3">
                       <span class="form-selectgroup-check"></span>
@@ -114,7 +114,7 @@
               </div>
               <div class="col-lg-6">
                 <label class="form-selectgroup-item">
-                  <input type="radio" name="report-type" value="user" class="form-selectgroup-input">
+                  <input type="radio" name="role" value="user" class="form-selectgroup-input">
                   <span class="form-selectgroup-label d-flex align-items-center p-3">
                     <span class="me-3">
                       <span class="form-selectgroup-check"></span>
@@ -131,13 +131,13 @@
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Password</label>
-                  <input id="password" type="password" class="form-control" name="example-text-input" placeholder="Password">
+                  <input id="password" type="password" class="form-control" name="password" placeholder="Password">
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Password Confirmation</label>
-                  <input id="password_confirmation" type="password" class="form-control" name="example-text-input" placeholder="Password Confirmation">
+                  <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" placeholder="Password Confirmation">
                 </div>
               </div>
             </div>
@@ -263,29 +263,21 @@
 
     function store() {
 
-      let name = $('#name').val();
-      let username = $('#username').val();
-      let email = $('#email').val();
+      let formData = new FormData($('#form')[0]);
+      formData.append("_token", "{{ csrf_token() }}");
 
       $.ajax({
         type  : 'POST',
         url   : '{{ route("user.store") }}',
-        dataType  : 'json',
-        data      : {
-          "_token": "{{ csrf_token() }}",
-          "name": name,
-          "username": username,
-        },
+        contentType: false,
+        processData: false,
+        data      : formData,
         success   : function (data) {
           console.log(data);
         },
         error : function (xhr, status, error) {
           let data = JSON.parse(xhr.responseText);
-          $('.overlay').hide();
-          Toast.fire({
-            icon: 'error',
-            title: data.message,
-          });
+          console.log(data);
         },
       });
     }
