@@ -31,7 +31,7 @@ Route::prefix('/bo')->group(function () {
     $limiter = config('fortify.limiters.login');
     Route::get('/', function() {
         return redirect('/bo/login');
-    });
+    })->name('backoffice');
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])
         ->middleware(['guest:'.config('fortify.guard')])
         ->name('login');
