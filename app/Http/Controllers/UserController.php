@@ -38,7 +38,6 @@ class UserController extends Controller
    */
   public function store(Request $request)
   {
-
     $rules = [
       'name' => 'required|string|regex:/^[a-zA-Z\s]+$/u|max:100',
       'username' => 'required|alpha_dash|max:50|unique:users,username',
@@ -50,7 +49,7 @@ class UserController extends Controller
     $validator = Validator::make($request->all(), $rules);
     if ($validator->fails()) {
       $responseArr['message'] = $validator->errors();
-      return response()->json($responseArr);
+      return response()->json($responseArr, 400);
     }
 
     $users = DB::table('users')->insert([

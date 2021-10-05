@@ -78,24 +78,36 @@
         <div class="modal-body">
 
           <form id="form">
+
             <div class="mb-3">
               <label class="form-label">Name</label>
               <input id="name" type="text" class="form-control" name="name" placeholder="Your Name">
+              <div class="invalid-feedback">
+                Error message
+              </div>
             </div>
+
             <div class="row">
               <div class="col-lg-7">
                 <div class="mb-3">
                   <label class="form-label">Email</label>
                   <input id="email" type="email" class="form-control" name="email" placeholder="example@mail.com">
+                  <div class="invalid-feedback">
+                    Error message
+                  </div>
                 </div>
               </div>
               <div class="col-lg-5">
                 <div class="mb-3">
                   <label class="form-label">Username</label>
                   <input id="username" type="text" class="form-control" name="username" placeholder="john.doe">
+                  <div class="invalid-feedback">
+                    Error message
+                  </div>
                 </div>
               </div>
             </div>
+
             <label class="form-label">User's Role</label>
             <div class="form-selectgroup-boxes row mb-3">
               <div class="col-lg-6">
@@ -114,7 +126,7 @@
               </div>
               <div class="col-lg-6">
                 <label class="form-selectgroup-item">
-                  <input type="radio" name="role" value="user" class="form-selectgroup-input">
+                  <input type="radio" name="role" value="user" class="form-selectgroup-input" checked>
                   <span class="form-selectgroup-label d-flex align-items-center p-3">
                     <span class="me-3">
                       <span class="form-selectgroup-check"></span>
@@ -127,20 +139,28 @@
                 </label>
               </div>
             </div>
+
             <div id="password" class="row">
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Password</label>
                   <input id="password" type="password" class="form-control" name="password" placeholder="Password">
+                  <div class="invalid-feedback">
+                    Error message
+                  </div>
                 </div>
               </div>
               <div class="col-lg-6">
                 <div class="mb-3">
                   <label class="form-label">Password Confirmation</label>
                   <input id="password_confirmation" type="password" class="form-control" name="password_confirmation" placeholder="Password Confirmation">
+                  <div class="invalid-feedback">
+                    Error message
+                  </div>
                 </div>
               </div>
             </div>
+
           </form>
 
         </div>
@@ -161,6 +181,18 @@
 
 @section('js')
   <script>
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      didOpen: (toast) => {
+        toast.addEventListener('mouseenter', Swal.stopTimer)
+        toast.addEventListener('mouseleave', Swal.resumeTimer)
+      }
+    });
+
     let table = $('#datatable').DataTable({
       // stateSave: true,
       processing: true,
@@ -213,8 +245,9 @@
 
     $('#modal-report').on('hidden.bs.modal', function() {
       $('.modal-title').html('Tambah User');
-      $(':input', this).val('');
+      $(':input', this).val('').removeClass("is-invalid");
       $('.form-selectgroup-input').prop("checked", false);
+      $('.form-selectgroup-input').eq(1).prop("checked", true);
     });
 
     function edit(id) {
@@ -274,10 +307,23 @@
         data      : formData,
         success   : function (data) {
           console.log(data);
+          Toast.fire({
+            icon: 'success',
+            title: 'User berhasil dibuat.'
+          });
         },
         error : function (xhr, status, error) {
-          let data = JSON.parse(xhr.responseText);
-          console.log(data);
+          let message = xhr.responseJSON.message;
+          $("form#form :input").removeClass("is-invalid").next(".invalid-feedback").html("Error message");
+          for (const key in message){
+            console.log(key);
+            $('input[name="'+key+'"]').addClass("is-invalid").next(".invalid-feedback").html(xhr.responseJSON.message[key]);
+          }
+
+          Toast.fire({
+            icon: 'error',
+            title: 'Gagal membuat user, periksa form.'
+          });
         },
       });
     }
