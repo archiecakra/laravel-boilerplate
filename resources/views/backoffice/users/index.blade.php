@@ -245,7 +245,8 @@
 
     $('#modal-report').on('hidden.bs.modal', function() {
       $('.modal-title').html('Tambah User');
-      $(':input', this).val('').removeClass("is-invalid");
+      $('form#form').trigger('reset');
+      $(':input', this).removeClass("is-invalid");
       $('.form-selectgroup-input').prop("checked", false);
       $('.form-selectgroup-input').eq(1).prop("checked", true);
     });
@@ -307,12 +308,15 @@
         data      : formData,
         success   : function (data) {
           console.log(data);
+          $("form#form :input").removeClass("is-invalid").next(".invalid-feedback").html("Error message");
+          $('#modal-report').modal('hide');
           Toast.fire({
             icon: 'success',
             title: 'User berhasil dibuat.'
           });
         },
         error : function (xhr, status, error) {
+
           let message = xhr.responseJSON.message;
           $("form#form :input").removeClass("is-invalid").next(".invalid-feedback").html("Error message");
           for (const key in message){
@@ -324,6 +328,7 @@
             icon: 'error',
             title: 'Gagal membuat user, periksa form.'
           });
+
         },
       });
     }
