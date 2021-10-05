@@ -61,6 +61,10 @@ class UserController extends Controller
       'created_at' =>  date('Y-m-d H:i:s'),
     ]);
 
+    return response()->json([
+      'message' => 'success'
+    ], 200);
+
   }
 
   /**
@@ -94,10 +98,10 @@ class UserController extends Controller
    */
   public function update(Request $request, User $user)
   {
-        $rules = [
+    $rules = [
       'name' => 'required|string|regex:/^[a-zA-Z\s]+$/u|max:100',
-      'username' => 'required|alpha_dash|max:50|unique:users,username',
-      'email' => 'required|email:dns,rfc|unique:users,email',
+      'username' => 'required|alpha_dash|max:50',
+      'email' => 'required|email:dns,rfc',
       'role' => 'required|in:admin,user',
       'password'  => 'nullable|string|min:8|confirmed',
     ];
@@ -107,6 +111,21 @@ class UserController extends Controller
       $responseArr['message'] = $validator->errors();
       return response()->json($responseArr, 400);
     }
+
+    $password = ($request->password) ? Hash::make($request->password) : $user->password;
+
+    $users = DB::table('users')->where('id', $user->id)->update([
+        'name'      => $request->name,
+        'role'      => $request->role,
+        'username'  => $request->username,
+        'email'     => $request->email,
+        'password'  => $password,
+        'updated_at' =>  date('Y-m-d H:i:s'),
+    ]);
+
+    return response()->json([
+      'message' => 'success'
+    ], 200);
   }
 
   /**

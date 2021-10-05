@@ -292,8 +292,6 @@
       var url = '{{ route("user.update", ":slug") }}';
       url = url.replace(':slug', id);
 
-      alert(url);
-
       let formData = new FormData($('#form')[0]);
       formData.append("_token", "{{ csrf_token() }}");
 
@@ -324,7 +322,7 @@
 
           Toast.fire({
             icon: 'error',
-            title: 'Gagal membuat user, periksa form.'
+            title: 'Gagal perbarui data, periksa form.',
           });
 
         },
