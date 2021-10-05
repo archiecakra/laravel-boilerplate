@@ -43,19 +43,19 @@ Route::prefix('/bo')->group(function () {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
-    // Route::middleware('auth')->group(function () {
-        //Page routes
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::middleware('auth')->group(function () {
+      //Page routes
+      Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-        //User management
-        Route::post('/user/table', [UserController::class, 'table'])->name('user.table');
-        Route::get('/user', [UserController::class, 'index'])->name('user.index');
-        Route::post('/user', [UserController::class, 'store'])->name('user.store');
-        Route::post('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-        Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
-        // Route::resource('user', UserController::class);
-        // Route::middleware('role.check')->group(function () {
-        //     Route::resource('user', UserController::class);
-        // });
-    // });
+      //User management
+      Route::post('/user/table', [UserController::class, 'table'])->name('user.table');
+      Route::get('/user', [UserController::class, 'index'])->name('user.index');
+      Route::post('/user', [UserController::class, 'store'])->name('user.store');
+      Route::post('/user/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
+      Route::post('/user/{user}', [UserController::class, 'update'])->name('user.update');
+      // Route::resource('user', UserController::class);
+      // Route::middleware('role.check')->group(function () {
+      //     Route::resource('user', UserController::class);
+      // });
+    });
 });
