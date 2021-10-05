@@ -94,7 +94,19 @@ class UserController extends Controller
    */
   public function update(Request $request, User $user)
   {
-      //
+        $rules = [
+      'name' => 'required|string|regex:/^[a-zA-Z\s]+$/u|max:100',
+      'username' => 'required|alpha_dash|max:50|unique:users,username',
+      'email' => 'required|email:dns,rfc|unique:users,email',
+      'role' => 'required|in:admin,user',
+      'password'  => 'nullable|string|min:8|confirmed',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+      $responseArr['message'] = $validator->errors();
+      return response()->json($responseArr, 400);
+    }
   }
 
   /**

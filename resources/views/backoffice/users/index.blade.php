@@ -254,7 +254,7 @@
     function edit(id) {
 
       $('.modal-title').html('Edit User');
-      $('#submit').attr('onclick','update()');
+      $('#submit').attr('onclick','update('+id+')');
 
       let url = '{{ route("user.edit", ":slug") }}';
       url = url.replace(':slug', id);
@@ -288,7 +288,47 @@
     }
 
     function update(id) {
-      alert('test update');
+
+      var url = '{{ route("user.update", ":slug") }}';
+      url = url.replace(':slug', id);
+
+      alert(url);
+
+      let formData = new FormData($('#form')[0]);
+      formData.append("_token", "{{ csrf_token() }}");
+
+      $.ajax({
+        type  : 'POST',
+        url   : url,
+        contentType: false,
+        processData: false,
+        data      : formData,
+        success   : function (data) {
+          console.log(data);
+          $("form#form :input").removeClass("is-invalid").next(".invalid-feedback").html("Error message");
+          $('#modal-report').modal('hide');
+          Toast.fire({
+            icon: 'success',
+            title: 'Data berhasil di perbarui.'
+          });
+          table.ajax.reload();
+        },
+        error : function (xhr, status, error) {
+
+          let message = xhr.responseJSON.message;
+          $("form#form :input").removeClass("is-invalid").next(".invalid-feedback").html("Error message");
+          for (const key in message){
+            console.log(key);
+            $('input[name="'+key+'"]').addClass("is-invalid").next(".invalid-feedback").html(xhr.responseJSON.message[key]);
+          }
+
+          Toast.fire({
+            icon: 'error',
+            title: 'Gagal membuat user, periksa form.'
+          });
+
+        },
+      });
     }
 
     function create() {
@@ -314,6 +354,7 @@
             icon: 'success',
             title: 'User berhasil dibuat.'
           });
+          table.ajax.reload();
         },
         error : function (xhr, status, error) {
 
